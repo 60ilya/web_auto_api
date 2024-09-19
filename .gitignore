@@ -129,6 +129,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+web_auto_server/venv
 
 # Spyder project settings
 .spyderproject
