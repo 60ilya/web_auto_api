@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация об автомобиле</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .car-details {
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .comments {
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+        .comments ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .comments li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .comment-form {
+            margin-top: 20px;
+        }
+        .comment-form textarea {
+            width: 100%;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="car-details">
+            <h1>Toyota Camry (2021)</h1>
+            <p>Компактный седан с отличной экономией топлива и современными технологиями безопасности.</p>
+        </div>
+        <div class="comments">
+            <h2>Комментарии</h2>
+            <ul>
+                <li>Отличный автомобиль! Очень доволен покупкой.</li>
+                <li>Впечатляющая экономия топлива, но немного дороговат.</li>
+            </ul>
+            <div class="comment-form">
+                <h3>Добавить комментарий</h3>
+                <form action="#">
+                    <textarea placeholder="Ваш комментарий..."></textarea>
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

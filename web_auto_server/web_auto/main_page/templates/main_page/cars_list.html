@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список автомобилей</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .car-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .car-list li {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+        .car-list a {
+            text-decoration: none;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Список автомобилей</h1>
+        <ul class="car-list">
+            {% for car in cars %}
+                <li>
+                    
+                        {{ car.make }} {{ car.model }} ({{ car.year }})
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="#">Добавить новый автомобиль</a>
+    </div>
+</body>
+</html>
