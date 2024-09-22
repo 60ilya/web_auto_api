@@ -4,7 +4,61 @@ from django.core.exceptions import PermissionDenied
 from .forms import CarForm
 from .models import Car
 from comments.forms import CommentForm
-from comments.models import Comment
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from .serializers import CarSerializer
+
+
+class CarListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        cars = Car.objects.all()
+        serializer = CarSerializer(cars, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = CarSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(owner=request.user)  # Устанавливаем владельца
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CarDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return Car.objects.get(pk=pk)
+        except Car.DoesNotExist:
+            return None
+        
+    def get(self, request, pk):
+        car = self.get_object(pk)
+        if car:
+            serializer = CarSerializer(car)
+            return Response(serializer.data)
+        return Response({'detail': 'Car not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+    def put(self, request, pk):
+        car = self.get_object(pk)
+        if car and car.owner == request.user:  # Проверяем владельца
+            serializer = CarSerializer(car, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'You do not have permission to edit this car.'}, status=status.HTTP_403_FORBIDDEN)
+
+    def delete(self, request, pk):
+        car = self.get_object(pk)
+        if car and car.owner == request.user:  # Проверяем владельца
+            car.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail': 'You do not have permission to delete this car.'}, status=status.HTTP_403_FORBIDDEN)
 
 def cars_list(request):
     cars = Car.objects.all()
