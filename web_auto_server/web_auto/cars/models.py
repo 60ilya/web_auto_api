@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User 
-from django.core.exceptions import PermissionDenied
 
 class Car(models.Model):
     make = models.CharField(max_length=50)  # Марка автомобиля
@@ -20,12 +19,8 @@ class Car(models.Model):
         return f"{self.make} {self.model} ({self.year})"
     
     def save(self, *args, **kwargs):
-        # if self.pk and self.owner != kwargs.get('user'):
-        #     raise PermissionDenied("Вы не можете редактировать этот автомобиль.")
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        # if self.owner != kwargs.get('user'):
-        #     raise PermissionDenied("Вы не можете удалять этот автомобиль.")
         super().delete(*args, **kwargs)
     

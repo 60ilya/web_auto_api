@@ -9,6 +9,7 @@ urlpatterns = [
     path('cars/<int:car_id>/edit/', views.car_edit, name='car_edit'),
     path('cars/<int:car_id>/delete/', views.car_delete, name='car_delete'),
     
+    #API methods
     path('api/cars/', CarListCreateView.as_view()),
     path("api/cars/<int:pk>/", CarDetailView.as_view()),
 

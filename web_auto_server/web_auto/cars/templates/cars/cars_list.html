@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список автомобилей</title>
+    <!-- Подключаем Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .user-info {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .user-info a, .user-info button {
+            margin-left: 10px;
+            text-decoration: none;
+            color: #007bff;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .user-info a:hover, .user-info button:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+        }
+        .add-car-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .add-car-btn i {
+            margin-right: 8px;
+        }
+        .add-car-btn:hover {
+            background-color: #218838;
+        }
+        .car-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .car-list li {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .car-list a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            flex-grow: 1;
+        }
+        .car-list .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .car-list .action-buttons a {
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .edit-btn {
+            background-color: #ffc107;
+        }
+        .edit-btn:hover {
+            background-color: #e0a800;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Информация о пользователе -->
+        <div class="user-info">
+            {% if user.is_authenticated %}
+                Пользователь: {{ user.username }} 
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Войти в аккаунт</a>
+                <a href="{% url 'register' %}">Зарегистрироваться</a>
+            {% endif %}
+        </div>
+
+        <!-- Кнопка добавить автомобиль -->
+        {% if user.is_authenticated %}
+            <a href="{% url 'car_add' %}" class="add-car-btn">
+                <i class="fas fa-plus"></i> Добавить новый автомобиль
+            </a>
+        {% endif %}
+
+        <h1>Список автомобилей</h1>
+        <ul class="car-list">
+            {% for car in cars %}
+                <li>
+                    <a href="{% url 'car_detail' car.id %}">{{ car.make }} {{ car.model }} ({{ car.year }})</a>
+                    {% if car.owner == user %}
+                        <div class="action-buttons">
+                            <a href="{% url 'car_edit' car.id %}" class="edit-btn">
+                                <i class="fas fa-edit"></i> Редактировать
+                            </a>
+                            <a href="{% url 'car_delete' car.id %}" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i> Удалить
+                            </a>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
